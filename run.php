@@ -12,16 +12,17 @@ $user = new User();
 
 $w->onWorkerStart = function() use ($user) {
 
-    while ($username = $user->getUser()) {
-        
-        $follow = $user->getUserFollow($username);
-        
-        preg_match_all('#["|\']https://www.zhihu.com/people/(.*?)["|\']#', $follow, $out);
+    $user->log('Start');
 
-        array_map(function($u) use ($user) {
-            $user->put($u);
-        }, $out[1]);
+    for ($i = 0; $i < 1000; $i++) {
+        $user::$parent = $user->getUserData();
     }
+
+    $followees_users = $user->getUserIndex($user::$parent, 'followees');
+    $followers_users = $user->getUserIndex($user::$parent, 'followers');
+
+    $user->put($followees_users);
+    $user->put($followers_users);
 
 };
 
