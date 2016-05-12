@@ -11,7 +11,7 @@ class User
     protected $curl;
     protected $queue;
     
-    protected $url = "https://www.zhihu.com/people/%s";
+    protected $url = "https://www.zhihu.com/people/%s/followees";
     
     public function __construct()
     {
@@ -21,17 +21,23 @@ class User
         $this->curl->setUserAgent($chrome);
         
         $this->queue = new Pheanstalk('127.0.0.1');
-        $this->queue->put('fyibmsd');
+        $this->queue->useTube(self::TUBE)->put('fyibmsd');
     }
     
     public function getUser()
     {
         $job = $this->queue->watch(self::TUBE)->ignore('default')->reserve();
         $username = $job->getData();
-        var_dump($username);
         $url = sprintf($this->url, $username);
+        var_dump($url);
         $this->curl->get($url);
-        return ($this->curl->httpStatusCode == 200) ? $this->curl->response : false;
+        if ($this->curl->httpStatusCode == 200) {
+            $this->queue->delete($job);
+            $result = $this->curl->response;
+            file_put_contents(realpath('.') . '/cache/' . $username, $result);
+            return $result;
+        }
+        return false;
     }
     
     public function put($job)
