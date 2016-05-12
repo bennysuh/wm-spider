@@ -14,12 +14,12 @@ $w->onWorkerStart = function(Worker $w) use ($user) {
 
     $user->log('Start');
 
+    $user->getUserIndex($user::$parent, 'followees');
+    $user->getUserIndex($user::$parent, 'followers');
+
     for ($i = 0; $i < 1000; $i++) {
         $user::$parent = $user->getUserData();
     }
-
-    $user->getUserIndex($user::$parent, 'followees');
-    $user->getUserIndex($user::$parent, 'followers');
 
 
 };
