@@ -10,7 +10,7 @@ $w = new Worker();
 $w->count = 4;
 $user = new User();
 
-$w->onWorkerStart = function() use ($user) {
+$w->onWorkerStart = function(Worker $w) use ($user) {
 
     $user->log('Start');
 

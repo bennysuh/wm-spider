@@ -251,10 +251,8 @@ class User
     public function put($job)
     {
         if (is_array($job)) {
-            var_dump($job);
             array_map(function($item) {
                 $this->queue->useTube(self::TUBE)->put($item);
-                var_dump($item);
             }, $job);
         } else {
             $this->queue->useTube(self::TUBE)->put($job);
