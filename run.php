@@ -18,11 +18,9 @@ $w->onWorkerStart = function(Worker $w) use ($user) {
         $user::$parent = $user->getUserData();
     }
 
-    $followees_users = $user->getUserIndex($user::$parent, 'followees');
-    $followers_users = $user->getUserIndex($user::$parent, 'followers');
+    $user->getUserIndex($user::$parent, 'followees');
+    $user->getUserIndex($user::$parent, 'followers');
 
-    $user->put($followees_users);
-    $user->put($followers_users);
 
 };
 

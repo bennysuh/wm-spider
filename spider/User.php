@@ -134,7 +134,7 @@ class User
                     $users = [];
                 }
                 
-                return $users;
+                return true;
             }
 
             return $this->curl->response;
@@ -252,6 +252,7 @@ class User
     {
         if (is_array($job)) {
             array_map(function($item) {
+                $this->log("{$item} -- 加入队列");
                 $this->queue->useTube(self::TUBE)->put($item);
             }, $job);
         } else {
