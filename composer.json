@@ -2,7 +2,6 @@
   "require": {
     "workerman/workerman": "^3.3",
     "php-curl-class/php-curl-class": "^4.11",
-    "pda/pheanstalk": "^3.1",
     "catfan/medoo": "^1.0"
   },
   "autoload": {
